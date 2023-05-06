@@ -8,7 +8,7 @@ public class EmployeeDTO {
 	String lastName;
 	String street;
 	String city;
-	Short pinCode;
+	Integer pinCode;
 
 	public Integer getId() {
 		return id;
@@ -50,11 +50,11 @@ public class EmployeeDTO {
 		this.city = city;
 	}
 
-	public Short getPinCode() {
+	public Integer getPinCode() {
 		return pinCode;
 	}
 
-	public void setPinCode(Short pinCode) {
+	public void setPinCode(Integer pinCode) {
 		this.pinCode = pinCode;
 	}
 	

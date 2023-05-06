@@ -1,9 +1,18 @@
 package app.DAOImpl;
 
-import app.DAO.EmployeeDAO;
-import app.model.EmployeeDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import app.DAO.EmployeeDAO;
+import app.entity.EmployeeEntity;
+import app.model.EmployeeDTO;
+import jakarta.persistence.EntityManager;
+
+@Repository
 public class EmployeeDAOImpl implements EmployeeDAO{
+	
+	@Autowired
+	EntityManager entityManager;
 
 	@Override
 	public Integer createEmployee(EmployeeDTO employee) {
@@ -11,9 +20,9 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	}
 
 	@Override
-	public Integer getEmployee(Integer employeeId) {
-		
-		return null;
+	public EmployeeDTO getEmployee(Integer employeeId) {
+		EmployeeEntity employeeEntity = entityManager.find(EmployeeEntity.class, employeeId);
+		return employeeEntity.createEmployeeDTO(employeeEntity);
 	}
 	
 }

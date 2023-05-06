@@ -1,14 +1,28 @@
 package app.entity;
 
 import app.model.EmployeeDTO;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "Employee")
 public class EmployeeEntity {
+
+	@Id
 	Integer id;
+
+	@Column(name = "first_name")
 	String firstName;
+
+	@Column(name = "last_name")
 	String lastName;
 	String street;
 	String city;
-	Short pinCode;
+
+	@Column(name = "pin_code")
+	Integer pinCode;
 
 	public Integer getId() {
 		return id;
@@ -50,18 +64,18 @@ public class EmployeeEntity {
 		this.city = city;
 	}
 
-	public Short getPinCode() {
+	public Integer getPinCode() {
 		return pinCode;
 	}
 
-	public void setPinCode(Short pinCode) {
+	public void setPinCode(Integer pinCode) {
 		this.pinCode = pinCode;
 	}
-	
+
 	public EmployeeDTO createEmployeeDTO(EmployeeEntity employeeEntity) {
-		EmployeeDTO employeeDTO=null;
-		if(employeeEntity != null) {
-			employeeDTO=new EmployeeDTO();
+		EmployeeDTO employeeDTO = null;
+		if (employeeEntity != null) {
+			employeeDTO = new EmployeeDTO();
 			employeeDTO.setCity(employeeEntity.getCity());
 			employeeDTO.setFirstName(employeeEntity.getFirstName());
 			employeeDTO.setId(employeeEntity.getId());
