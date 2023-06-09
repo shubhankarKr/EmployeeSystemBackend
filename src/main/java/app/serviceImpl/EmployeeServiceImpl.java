@@ -1,6 +1,7 @@
 package app.serviceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 	EmployeeDAO employeeDAO;
 
 	@Override
-	public Integer createEmployee(EmployeeDTO employee) {
-		return employeeDAO.createEmployee(employee);
+	public String createEmployee(EmployeeDTO employee) {
+		if(employee.getFirstName() != null) {
+			 employeeDAO.createEmployee(employee);
+			 return "Employee inserted successfully";
+		}
+		return "Please enter first name";
 	}
 
 	@Override
@@ -31,6 +36,30 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public List<EmployeeDTO> getEmployees() {
 		// TODO Auto-generated method stub
 		return employeeDAO.getEmployees();
+	}
+
+	@Override
+	public Map<String, Integer> loginEmployee(String email, String password) {
+		// TODO Auto-generated method stub
+		return employeeDAO.validateEmployee(email,password);
+	}
+
+	@Override
+	public Boolean deleteEmployee(EmployeeDTO employee) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EmployeeDTO updateEmployee(EmployeeDTO employee) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<EmployeeDTO> searchEmployeeByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

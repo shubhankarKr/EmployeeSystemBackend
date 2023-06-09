@@ -1,6 +1,7 @@
 package app.DAO;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +11,5 @@ public interface EmployeeDAO {
 	public Integer createEmployee(EmployeeDTO employee);
 	public EmployeeDTO getEmployee(Integer employeeId);
 	public List<EmployeeDTO> getEmployees();
+	public Map<String, Integer> validateEmployee(String email, String password);
 }
