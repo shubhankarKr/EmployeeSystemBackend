@@ -21,7 +21,8 @@ insert into Employee values(1,'Rohan','Sharama','Marathalli','Bangalore',560037,
 select * from Employee;
 
 CREATE TABLE Skill(
-	emp_id int PRIMARY KEY,
+	skill_id int PRIMARY KEY,
+	emp_id int,
 	skill_name varchar(50)
 );
 

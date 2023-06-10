@@ -18,12 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 	EmployeeDAO employeeDAO;
 
 	@Override
-	public String createEmployee(EmployeeDTO employee) {
-		if(employee.getFirstName() != null) {
-			 employeeDAO.createEmployee(employee);
-			 return "Employee inserted successfully";
-		}
-		return "Please enter first name";
+	public EmployeeDTO createEmployee(EmployeeDTO employee) {
+		return employeeDAO.createEmployee(employee);
 	}
 
 	@Override

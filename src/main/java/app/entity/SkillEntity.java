@@ -3,6 +3,8 @@ package app.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,8 +13,13 @@ import jakarta.persistence.Table;
 public class SkillEntity {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "skill_id")
+	private Integer skillId;
+	
 	@Column(name = "emp_id")
 	private Integer empId;
+	
 	@Column(name = "skill_name")
 	private String skillName;
 
@@ -30,6 +37,14 @@ public class SkillEntity {
 
 	public void setSkillName(String skillName) {
 		this.skillName = skillName;
+	}
+
+	public Integer getSkillId() {
+		return skillId;
+	}
+
+	public void setSkillId(Integer skillId) {
+		this.skillId = skillId;
 	}
 	
 }
