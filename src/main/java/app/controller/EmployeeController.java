@@ -40,7 +40,7 @@ public class EmployeeController {
 	}
 	
 	@PostMapping(value="/login",produces = "application/json")
-	public Map<String, Integer> validateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+	public Map<String, Integer> loginEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		return employeeService.loginEmployee(employeeDTO.getEmail(),employeeDTO.getPassword());
 	}
 }
