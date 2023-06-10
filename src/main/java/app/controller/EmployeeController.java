@@ -18,7 +18,7 @@ import app.service.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+//@CrossOrigin(origins = "*",allowedHeaders = "*")
 public class EmployeeController {
 	
 	@Autowired
