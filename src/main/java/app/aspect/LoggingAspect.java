@@ -26,8 +26,7 @@ public class LoggingAspect {
 	}
 	
 	@AfterReturning(pointcut = "execution(* app.service.*.*(..))",returning = "result")
-	public void logAfterAdvice(JoinPoint joinPoint,String result) {
-		logger.info("called method successful "+joinPoint.getSignature().getName()+"()");
-		logger.info("value "+result.toString());
+	public void logAfterAdvice(JoinPoint joinPoint) {
+		logger.info("called method "+joinPoint.getSignature().getName()+"()" +" successful");
 	}
 }
