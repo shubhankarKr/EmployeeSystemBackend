@@ -23,13 +23,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public EmployeeDTO getEmployee(Integer employeeId) {
+	public EmployeeDTO getEmployee(Integer employeeId){
 		// TODO Auto-generated method stub
 		return employeeDAO.getEmployee(employeeId);
 	}
 
 	@Override
-	public List<EmployeeDTO> getEmployees() {
+	public List<EmployeeDTO> getEmployees(){
 		// TODO Auto-generated method stub
 		return employeeDAO.getEmployees();
 	}
