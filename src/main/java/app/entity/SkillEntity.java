@@ -1,6 +1,7 @@
 package app.entity;
 
 
+import app.model.SkillDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,6 +46,14 @@ public class SkillEntity {
 
 	public void setSkillId(Integer skillId) {
 		this.skillId = skillId;
+	}
+
+	public SkillDTO createSkillDTO(SkillEntity entity) {
+		SkillDTO dto=new SkillDTO();
+		dto.setSkillId(entity.getSkillId());
+		dto.setEmpId(entity.getEmpId());
+		dto.setSkillName(entity.getSkillName());
+		return dto;
 	}
 	
 }

@@ -3,6 +3,7 @@ package app.model;
 import app.entity.SkillEntity;
 
 public class SkillDTO {
+	private Integer skillId;
 	private Integer empId;
 	private String skillName;
 
@@ -20,6 +21,14 @@ public class SkillDTO {
 
 	public void setSkillName(String skillName) {
 		this.skillName = skillName;
+	}
+	
+	public Integer getSkillId() {
+		return skillId;
+	}
+
+	public void setSkillId(Integer skillId) {
+		this.skillId = skillId;
 	}
 
 	public SkillEntity createSkillEntity(SkillDTO skillDTO) {
