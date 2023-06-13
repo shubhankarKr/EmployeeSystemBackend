@@ -1,0 +1,13 @@
+
+All Employees Details
+
+GET http://test-env.eba-zuzdkqve.ap-south-1.elasticbeanstalk.com/employee/getAllEmployee 
+
+GET http://test-env.eba-zuzdkqve.ap-south-1.elasticbeanstalk.com/employee/getEmployeeById/1
+
+POST http://test-env.eba-zuzdkqve.ap-south-1.elasticbeanstalk.com/employee/create
+
+GET http://test-env.eba-zuzdkqve.ap-south-1.elasticbeanstalk.com/skill/getAllSkills
+
+PUT http://test-env.eba-zuzdkqve.ap-south-1.elasticbeanstalk.com/skill/update
+POST http://test-env.eba-zuzdkqve.ap-south-1.elasticbeanstalk.com/skill/create
