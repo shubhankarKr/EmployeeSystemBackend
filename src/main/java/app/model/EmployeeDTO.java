@@ -143,17 +143,6 @@ public class EmployeeDTO {
 			employeeEntity.setEmail(employeeDTO.getEmail());
 			employeeEntity.setPassword(employeeDTO.getPassword());
 			employeeEntity.setDesignation(employeeDTO.getDesignation());
-			List<SkillDTO> skillDTOs=employeeDTO.getSkills();
-			if(skillDTOs != null) {
-				List<SkillEntity> skillEntities=new ArrayList<>();
-				for (SkillDTO skillDTO : skillDTOs) {
-					SkillEntity skillEntity=new SkillEntity();
-					skillEntity.setEmpId(skillDTO.getEmpId());
-					skillEntity.setSkillName(skillDTO.getSkillName());
-					skillEntities.add(skillEntity);
-				}
-				employeeEntity.setSkill(skillEntities);
-			}
 		}
 		return employeeEntity;
 	}

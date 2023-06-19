@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import app.DAO.EmployeeDAO;
 import app.exception.employee.EmployeeAlreadyExistsException;
+import app.exception.employee.EmployeeNotFoundException;
 import app.model.EmployeeDTO;
 import app.service.EmployeeService;
 import jakarta.transaction.Transactional;
@@ -21,7 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	EmployeeDAO employeeDAO;
 
 	@Override
-	public String createEmployee(EmployeeDTO employee) throws Exception {
+	public String createEmployee(EmployeeDTO employee) throws EmployeeAlreadyExistsException {
 		Boolean employeeInDB= employeeDAO.findEmployeeByEmail(employee.getEmail());
 		if(employeeInDB ==true) {
 			throw new EmployeeAlreadyExistsException("Employee already exists Please login!");
@@ -31,9 +32,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public EmployeeDTO getEmployee(Integer employeeId){
+	public EmployeeDTO getEmployeeById(Integer employeeId) throws EmployeeNotFoundException{
 		// TODO Auto-generated method stub
-		return employeeDAO.getEmployee(employeeId);
+		return employeeDAO.getEmployeeById(employeeId);
 	}
 
 	@Override
@@ -55,9 +56,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public EmployeeDTO updateEmployee(EmployeeDTO employee) {
+	public String updateEmployee(EmployeeDTO employee) throws Exception{
 		// TODO Auto-generated method stub
-		return null;
+		return employeeDAO.updateEmployee(employee);
 	}
 
 	@Override
