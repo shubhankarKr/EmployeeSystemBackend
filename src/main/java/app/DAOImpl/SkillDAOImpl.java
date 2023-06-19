@@ -53,4 +53,22 @@ public class SkillDAOImpl implements SkillDAO{
 	    }
 		return skillDTOs;
 	}
+
+	@Override
+	public List<SkillDTO> updateSkillForEmployee(Integer empId, List<SkillDTO> skillDTO) {
+		List<SkillDTO> res=new ArrayList<>();
+		for (SkillDTO skillDTO2 : skillDTO) {
+			SkillEntity entity=entityManager.find(SkillEntity.class, skillDTO2.getSkillId());
+			if(entity!=null) {
+				entity.setSkillName(skillDTO2.getSkillName());
+			}else {
+				entity=new SkillEntity();
+				entity.setEmpId(empId);
+				entity.setSkillName(skillDTO2.getSkillName());
+				entityManager.persist(entity);
+			}
+			res.add(entity.createSkillDTO(entity));
+		}
+		return res;
+	}
 }

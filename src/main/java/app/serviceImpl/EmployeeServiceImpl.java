@@ -25,10 +25,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public String createEmployee(EmployeeDTO employee) throws EmployeeAlreadyExistsException {
 		Boolean employeeInDB= employeeDAO.findEmployeeByEmail(employee.getEmail());
 		if(employeeInDB ==true) {
-			throw new EmployeeAlreadyExistsException("Employee already exists Please login!");
+			throw new EmployeeAlreadyExistsException("EMPLOYEE_ALREADY_EXISTS");
 		}
 		return employeeDAO.createEmployee(employee);
-			
 	}
 
 	@Override
@@ -50,13 +49,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public Boolean deleteEmployee(EmployeeDTO employee) {
-		// TODO Auto-generated method stub
+	public String deleteEmployee(String email) throws Exception {
+		if(employeeDAO.deleteEmployee(email) == true) {
+			return "Employee deleted successfully";
+		}
 		return null;
 	}
 
 	@Override
-	public String updateEmployee(EmployeeDTO employee) throws Exception{
+	public EmployeeDTO updateEmployee(EmployeeDTO employee) throws Exception{
 		// TODO Auto-generated method stub
 		return employeeDAO.updateEmployee(employee);
 	}

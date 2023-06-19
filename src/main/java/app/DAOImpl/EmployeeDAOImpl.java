@@ -1,5 +1,6 @@
 package app.DAOImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Repository;
 
 
 import app.DAO.EmployeeDAO;
+import app.DAO.SkillDAO;
 import app.entity.EmployeeEntity;
 import app.entity.SkillEntity;
 import app.exception.employee.EmployeeNotFoundException;
 import app.model.EmployeeDTO;
 import app.model.SkillDTO;
+import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 
 @Repository
@@ -23,6 +26,9 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	
 	@Autowired
 	EntityManager entityManager;
+	
+	@Resource
+	SkillDAO skillDAO;
 
 	@Override
 	public String createEmployee(EmployeeDTO employeeDTO) {
@@ -38,7 +44,6 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				entityManager.persist(skillEntity);
 			}
 		}
-//		employeeEntity.setSkill((List<SkillEntity>) entityManager.find(SkillEntity.class, employeeEntity.getId()));
 		return "Employee created successfully with ID: "+employeeEntity.getId();
 	}
 
@@ -95,7 +100,8 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	}
 
 	@Override
-	public String updateEmployee(EmployeeDTO employeeDTO) throws Exception {
+	public EmployeeDTO updateEmployee(EmployeeDTO employeeDTO) throws Exception {
+		EmployeeDTO dto=null;
 		try {
 			String email=employeeDTO.getEmail();
 			Query query= (Query) entityManager.createQuery("select e from EmployeeEntity e where e.email = :email");
@@ -109,12 +115,27 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				employeeEntity.setStreet(employeeDTO.getStreet());
 				employeeEntity.setGender(employeeDTO.getGender());
 				employeeEntity.setDesignation(employeeDTO.getDesignation());
+				skillDAO.updateSkillForEmployee(employeeEntity.getId(), employeeDTO.getSkills());
+				dto=employeeEntity.createEmployeeDTO(employeeEntity);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			throw new Exception("Employee not found. Please enter correct crendential");
+			throw new Exception("EMPLOYEE_NOT_FOUND");
 		}
-		return "Employee updated Successfully"; 
+		return dto;
 	}
-	
+
+	@Override
+	public Boolean deleteEmployee(String email) throws Exception {
+		try {
+			Query query= (Query) entityManager.createQuery("select e from EmployeeEntity e where e.email = :email");
+			query.setParameter("email", email);
+			EmployeeEntity employeeEntity=(EmployeeEntity) query.getSingleResult();
+			if(employeeEntity!=null) {
+				entityManager.remove(employeeEntity);
+			}
+		} catch (Exception e) {
+			throw new Exception("EMPLOYEE_NOT_FOUND");
+		}
+		return true;
+	}
 }

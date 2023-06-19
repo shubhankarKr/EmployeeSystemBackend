@@ -8,4 +8,5 @@ public interface SkillDAO {
 		public Integer createSkill(SkillDTO skillDTO);
 		public SkillDTO updateSkill(SkillDTO skillDTO);
 		public List<SkillDTO> getSkills();
+		public List<SkillDTO> updateSkillForEmployee(Integer empId,List<SkillDTO> skillDTO);
 }

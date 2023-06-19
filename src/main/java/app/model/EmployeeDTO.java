@@ -1,20 +1,26 @@
 package app.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import app.entity.EmployeeEntity;
-import app.entity.SkillEntity;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public class EmployeeDTO {
 	private Integer id;
+	@NotNull(message = "Please enter the first name")
 	private String firstName;
 	private String lastName;
 	private String street;
 	private String city;
 	private Integer pinCode;
-	private Character gender;
+	@NotNull(message = "Please select gender")
+	@Pattern(regexp =  "[MF]",message = "Gender should be either M or F")
+	private String gender;
+	@Email(message = "Please enter valid email")
 	private String email;
+	@NotNull(message = "Please enter password")
 	private String password;
 	private String designation;
 	private List<SkillDTO> skills;
@@ -79,12 +85,12 @@ public class EmployeeDTO {
 	}
 
 
-	public Character getGender() {
+	public String getGender() {
 		return gender;
 	}
 
 
-	public void setGender(Character gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
@@ -135,7 +141,6 @@ public class EmployeeDTO {
 			employeeEntity=new EmployeeEntity();
 			employeeEntity.setCity(employeeDTO.getCity());
 			employeeEntity.setFirstName(employeeDTO.getFirstName());
-			employeeEntity.setId(employeeDTO.getId());
 			employeeEntity.setLastName(employeeDTO.getLastName());
 			employeeEntity.setPinCode(employeeDTO.getPinCode());
 			employeeEntity.setStreet(employeeDTO.getStreet());

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import app.exception.employee.EmployeeNotFoundException;
 import app.model.EmployeeDTO;
 import app.model.SuccessResponse;
 import app.service.EmployeeService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/employee")
@@ -29,7 +31,7 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	
 	@PostMapping("/create" )
-	public ResponseEntity<SuccessResponse> createEmployee(@RequestBody EmployeeDTO employee) throws EmployeeAlreadyExistsException{
+	public ResponseEntity<SuccessResponse> createEmployee(@Valid @RequestBody EmployeeDTO employee) throws EmployeeAlreadyExistsException{
 		String response=employeeService.createEmployee(employee);
 		SuccessResponse data=new SuccessResponse(HttpStatus.CREATED.value(), response);
 		return new ResponseEntity<>(data,HttpStatus.CREATED);
@@ -48,7 +50,7 @@ public class EmployeeController {
 	
 	@PutMapping("/update")
 	public ResponseEntity<SuccessResponse> updateEmployee(@RequestBody EmployeeDTO employeeDTO) throws Exception{
-		String response=employeeService.updateEmployee(employeeDTO);
+		EmployeeDTO response=employeeService.updateEmployee(employeeDTO);
 		SuccessResponse data=new SuccessResponse(HttpStatus.OK.value(), response);
 		return new ResponseEntity<>(data,HttpStatus.OK);
 	}
@@ -56,5 +58,12 @@ public class EmployeeController {
 	@PostMapping(value="/login",produces = "application/json")
 	public Map<String, Integer> loginEmployee(@RequestBody EmployeeDTO employeeDTO) {
 		return employeeService.loginEmployee(employeeDTO.getEmail(),employeeDTO.getPassword());
+	}
+	
+	@DeleteMapping("/delete/{email}")
+	public ResponseEntity<SuccessResponse> deleteEmployee(@PathVariable String email) throws Exception{
+		String response=employeeService.deleteEmployee(email);
+		SuccessResponse data=new SuccessResponse(HttpStatus.OK.value(), response);
+		return new ResponseEntity<>(data,HttpStatus.OK);
 	}
 }

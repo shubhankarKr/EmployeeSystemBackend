@@ -14,5 +14,6 @@ public interface EmployeeDAO {
 	public List<EmployeeDTO> getEmployees();
 	public Map<String, Integer> validateEmployee(String email, String password);
 	public Boolean findEmployeeByEmail(String email);
-	public String updateEmployee(EmployeeDTO employee) throws Exception;
+	public EmployeeDTO updateEmployee(EmployeeDTO employee) throws Exception;
+	public Boolean deleteEmployee(String email) throws Exception;
 }

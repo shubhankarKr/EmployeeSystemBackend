@@ -35,7 +35,7 @@ public class EmployeeEntity {
 	@Column(name = "pin_code")
 	Integer pinCode;
 	
-	Character gender;
+	String gender;
 	
 	String email;
 	
@@ -63,11 +63,11 @@ public class EmployeeEntity {
 		this.email = email;
 	}
 
-	public Character getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(Character gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
