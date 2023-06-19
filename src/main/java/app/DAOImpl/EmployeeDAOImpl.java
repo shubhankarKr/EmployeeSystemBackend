@@ -24,7 +24,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	EntityManager entityManager;
 
 	@Override
-	public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+	public String createEmployee(EmployeeDTO employeeDTO) {
 		EmployeeEntity employeeEntity= null;
 		
 		employeeEntity=new EmployeeEntity();
@@ -50,7 +50,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			}
 		}
 //		employeeEntity.setSkill((List<SkillEntity>) entityManager.find(SkillEntity.class, employeeEntity.getId()));
-		return employeeEntity.createEmployeeDTO(employeeEntity);
+		return "Employee created successfully with ID: "+employeeEntity.getId();
 	}
 
 	@Override
@@ -84,6 +84,21 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			outMap.put("code",1);
 		}
 		return outMap;
+	}
+
+	@Override
+	public Boolean findEmployeeByEmail(String email) {		
+		try {
+			Query query= (Query) entityManager.createQuery("select e from EmployeeEntity e where e.email = :email");
+			query.setParameter("email", email);
+			EmployeeEntity employeeEntity=(EmployeeEntity) query.getSingleResult();
+			if(employeeEntity != null) {
+				return true;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return false;		
 	}
 	
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import app.model.EmployeeDTO;
 
 public interface EmployeeService {
-	public EmployeeDTO createEmployee(EmployeeDTO employee);
+	public String createEmployee(EmployeeDTO employee) throws Exception;
 	public EmployeeDTO getEmployee(Integer employeeId);
 	public List<EmployeeDTO> getEmployees();
 	public Map<String, Integer> loginEmployee(String email, String password);

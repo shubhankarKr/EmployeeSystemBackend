@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import app.DAO.EmployeeDAO;
+import app.exception.employee.EmployeeAlreadyExistsException;
 import app.model.EmployeeDTO;
 import app.service.EmployeeService;
 import jakarta.transaction.Transactional;
@@ -18,8 +21,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	EmployeeDAO employeeDAO;
 
 	@Override
-	public EmployeeDTO createEmployee(EmployeeDTO employee) {
+	public String createEmployee(EmployeeDTO employee) throws Exception {
+		Boolean employeeInDB= employeeDAO.findEmployeeByEmail(employee.getEmail());
+		if(employeeInDB ==true) {
+			throw new EmployeeAlreadyExistsException("Employee already exists Please login!");
+		}
 		return employeeDAO.createEmployee(employee);
+			
 	}
 
 	@Override

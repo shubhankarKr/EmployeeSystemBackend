@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.client.HttpClientErrorException;
 
 import app.model.EmployeeDTO;
 import app.service.EmployeeService;
@@ -25,7 +25,7 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	
 	@PostMapping("/create")
-	public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employee) {
+	public String createEmployee(@RequestBody EmployeeDTO employee) throws Exception{
 		return employeeService.createEmployee(employee);
 	}
 	
