@@ -1,4 +1,4 @@
-package app.model;
+package app.model.response;
 
 public class SuccessResponse {
 	private Integer statusCode;

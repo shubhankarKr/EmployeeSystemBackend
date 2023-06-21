@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import app.exception.ErrorMessage;
 import app.exception.employee.EmployeeAlreadyExistsException;
+import app.model.response.ErrorResponse;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
@@ -18,14 +18,14 @@ public class ExceptionControllerAdvice {
 	Environment environment;
 	
 	@ExceptionHandler(value=EmployeeAlreadyExistsException.class)
-	public ResponseEntity<ErrorMessage> createEmployeeExceptionalHandler(EmployeeAlreadyExistsException exception){
-		ErrorMessage errorMessage=new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), LocalDateTime.now());
-		return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<ErrorResponse> createEmployeeExceptionalHandler(EmployeeAlreadyExistsException exception){
+		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), LocalDateTime.now());
+		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorMessage> genericEmployeeExceptionalHandler(Exception exception){
-		ErrorMessage errorMessage=new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage(), LocalDateTime.now());
-		return new ResponseEntity<ErrorMessage>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<ErrorResponse> genericEmployeeExceptionalHandler(Exception exception){
+		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

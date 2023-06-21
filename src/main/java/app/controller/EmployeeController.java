@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import app.exception.employee.EmployeeAlreadyExistsException;
 import app.exception.employee.EmployeeNotFoundException;
 import app.model.EmployeeDTO;
-import app.model.SuccessResponse;
+import app.model.response.SuccessResponse;
 import app.service.EmployeeService;
 import jakarta.validation.Valid;
 
