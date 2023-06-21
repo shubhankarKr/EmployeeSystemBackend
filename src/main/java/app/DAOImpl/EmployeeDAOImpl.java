@@ -53,7 +53,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			EmployeeEntity employeeEntity = entityManager.find(EmployeeEntity.class, employeeId);
 			return employeeEntity.createEmployeeDTO(employeeEntity);
 		} catch (Exception e) {
-			throw new EmployeeNotFoundException("Employee does not exist");
+			throw new EmployeeNotFoundException("EMPLOYEE_NOT_FOUND");
 		}
 	}
 

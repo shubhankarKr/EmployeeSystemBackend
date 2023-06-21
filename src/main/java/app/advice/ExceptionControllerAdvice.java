@@ -14,6 +14,7 @@ import app.model.response.ErrorResponse;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+	
 	@Autowired
 	Environment environment;
 	
@@ -25,7 +26,7 @@ public class ExceptionControllerAdvice {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> genericEmployeeExceptionalHandler(Exception exception){
-		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage(), LocalDateTime.now());
+		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), LocalDateTime.now());
 		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
