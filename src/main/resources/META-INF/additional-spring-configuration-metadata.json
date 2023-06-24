@@ -8,5 +8,15 @@
     "name": "EMPLOYEE_NOT_FOUND",
     "type": "java.lang.String",
     "description": "A description for 'EMPLOYEE_NOT_FOUND'"
+  },
+  {
+    "name": "NO_RECORD_FOUND_WIHT_THE_GIVEN_SERCH_VALUE",
+    "type": "java.lang.String",
+    "description": "A description for 'NO_RECORD_FOUND_WIHT_THE_GIVEN_SERCH_VALUE'"
+  },
+  {
+    "name": "HOST_NAME",
+    "type": "java.lang.String",
+    "description": "A description for 'HOST_NAME'"
   }
 ]}

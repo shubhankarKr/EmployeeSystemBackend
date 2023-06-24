@@ -33,10 +33,10 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	
 	@PostMapping("/create" )
-	public ResponseEntity<SuccessResponse> createEmployee(@Valid @RequestBody EmployeeDTO employee) throws EmployeeAlreadyExistsException{
+	public ResponseEntity<SuccessResponse> createEmployee(@Valid @RequestBody EmployeeDTO employee) throws Exception {
 		String response=employeeService.createEmployee(employee);
 		SuccessResponse data=new SuccessResponse(HttpStatus.CREATED.value(), response);
-		return new ResponseEntity<>(data,HttpStatus.CREATED);
+		return new ResponseEntity<>(data,HttpStatus.CREATED); 
 		
 	}
 	

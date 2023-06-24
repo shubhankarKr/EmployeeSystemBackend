@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Autowired
 	EmployeeDAO employeeDAO;
+	
+	@Autowired
+	Environment environment;
 
 	@Override
 	public String createEmployee(EmployeeDTO employee) throws EmployeeAlreadyExistsException {
 		Boolean employeeInDB= employeeDAO.findEmployeeByEmail(employee.getEmail());
 		if(employeeInDB ==true) {
-			throw new EmployeeAlreadyExistsException("EMPLOYEE_ALREADY_EXISTS");
+			throw new EmployeeAlreadyExistsException(environment.getProperty("EMPLOYEE_ALREADY_EXISTS"));
 		}
 		return employeeDAO.createEmployee(employee);
 	}

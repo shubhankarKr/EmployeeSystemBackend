@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class ErrorResponse{
 	private Integer statusCode;
-	private Object error;
+	private Object errorResponse;
 	private Object argumentNotValidError;
 	private LocalDateTime date;
 	public Integer getStatusCode() {
@@ -13,17 +13,11 @@ public class ErrorResponse{
 	public void setStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 	}
-	public LocalDateTime getDate() {
-		return date;
+	public Object getErrorResponse() {
+		return errorResponse;
 	}
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-	public Object getError() {
-		return error;
-	}
-	public void setError(Object error) {
-		this.error = error;
+	public void setErrorResponse(Object errorResponse) {
+		this.errorResponse = errorResponse;
 	}
 	public Object getArgumentNotValidError() {
 		return argumentNotValidError;
@@ -31,13 +25,17 @@ public class ErrorResponse{
 	public void setArgumentNotValidError(Object argumentNotValidError) {
 		this.argumentNotValidError = argumentNotValidError;
 	}
-	public ErrorResponse(Integer statusCode, Object error, Object argumentNotValidError, LocalDateTime date) {
+	public LocalDateTime getDate() {
+		return date;
+	}
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+	public ErrorResponse(Integer statusCode, Object errorResponse, Object argumentNotValidError, LocalDateTime date) {
 		super();
 		this.statusCode = statusCode;
-		this.error = error;
+		this.errorResponse = errorResponse;
 		this.argumentNotValidError = argumentNotValidError;
 		this.date = date;
 	}
-	
-	
 }

@@ -19,21 +19,21 @@ public class ExceptionControllerAdvice {
 	@Autowired
 	Environment environment;
 	
-	@ExceptionHandler(value=EmployeeAlreadyExistsException.class)
-	public ResponseEntity<ErrorResponse> createEmployeeExceptionalHandler(EmployeeAlreadyExistsException exception){
-		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), null, LocalDateTime.now());
-		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> genericEmployeeExceptionalHandler(Exception exception){
-		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),null, exception, LocalDateTime.now());
-		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorResponse> EmployeeExceptionalHandler(Exception exception){
-		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), null, LocalDateTime.now());
-		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+//	@ExceptionHandler(value=EmployeeAlreadyExistsException.class)
+//	public ResponseEntity<ErrorResponse> createEmployeeExceptionalHandler(EmployeeAlreadyExistsException exception){
+//		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception, null, LocalDateTime.now());
+//		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
+//	
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<ErrorResponse> genericEmployeeExceptionalHandler(Exception exception){
+//		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),null, exception, LocalDateTime.now());
+//		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
+//	
+//	@ExceptionHandler(Exception.class)
+//	public ResponseEntity<ErrorResponse> EmployeeExceptionalHandler(Exception exception){
+//		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception, null, LocalDateTime.now());
+//		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
 }

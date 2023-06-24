@@ -46,6 +46,8 @@ public class EmployeeEntity {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "emp_id")
 	private List<SkillEntity> skill; 
+	
+	private String url;
 
 	public String getPassword() {
 		return password;
@@ -134,6 +136,14 @@ public class EmployeeEntity {
 	public void setSkill(List<SkillEntity> skill) {
 		this.skill = skill;
 	}
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public EmployeeDTO createEmployeeDTO(EmployeeEntity employeeEntity) {
 		EmployeeDTO employeeDTO = null;
@@ -149,6 +159,7 @@ public class EmployeeEntity {
 			employeeDTO.setEmail(employeeEntity.getEmail());
 			employeeDTO.setPassword(employeeEntity.getPassword());
 			employeeDTO.setDesignation(employeeEntity.getDesignation());
+			employeeDTO.setUrl(employeeEntity.getUrl());
 			List<SkillEntity> skillEntities =employeeEntity.getSkill();
 			if (skillEntities != null) {
 				List<SkillDTO> skillDTOs=new ArrayList<>();

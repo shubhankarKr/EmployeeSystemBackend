@@ -44,6 +44,8 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	public String createEmployee(EmployeeDTO employeeDTO) {
 		EmployeeEntity employeeEntity= employeeDTO.createEmployeeEntity(employeeDTO);
 		entityManager.persist(employeeEntity);
+		String url="http://"+environment.getProperty("HOST_NAME")+"/employee/getEmployeeById/"+employeeEntity.getId();
+		employeeEntity.setUrl(url);
 		List<SkillDTO> skillDTOs=  employeeDTO.getSkills();
 		if(skillDTOs !=null ) {
 			SkillEntity skillEntity=null;
@@ -63,7 +65,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			EmployeeEntity employeeEntity = entityManager.find(EmployeeEntity.class, employeeId);
 			return employeeEntity.createEmployeeDTO(employeeEntity);
 		} catch (Exception e) {
-			throw new EmployeeNotFoundException("EMPLOYEE_NOT_FOUND");
+			throw new EmployeeNotFoundException(environment.getProperty("EMPLOYEE_NOT_FOUND"));
 		}
 	}
 
@@ -71,7 +73,11 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	public List<EmployeeDTO> getEmployees() {
 		// TODO Auto-generated method stub
 		Query query= (Query) entityManager.createQuery("select e from EmployeeEntity e");
-		List<EmployeeDTO> employees =  query.getResultList();
+		List<EmployeeEntity> entities =  query.getResultList();
+		List<EmployeeDTO> employees=new ArrayList<>();
+		for (EmployeeEntity employeeEntity : entities) {
+			employees.add(employeeEntity.createEmployeeDTO(employeeEntity));
+		}
 		return employees;
 	}
 
@@ -132,7 +138,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			throw new Exception("EMPLOYEE_NOT_FOUND");
+			throw new Exception(environment.getProperty("EMPLOYEE_NOT_FOUND"));
 		}
 		return dto;
 	}
@@ -148,11 +154,12 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			throw new Exception("EMPLOYEE_NOT_FOUND");
+			throw new Exception(environment.getProperty("EMPLOYEE_NOT_FOUND"));
 		}
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception {
 		// TODO Auto-generated method stub
@@ -171,14 +178,14 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				entities.add(employeeEntity);
 			}
 			if(entities.size() == 0)
-				throw new Exception("NO_RECORD_FOUND_WIHT_THE_GIVEN_SERCH_VALUE");
+				throw new Exception(environment.getProperty("NO_RECORD_FOUND_WIHT_THE_GIVEN_SERCH_VALUE"));
 			for (EmployeeEntity entity : entities) {
 				employeeDTOs.add(entity.createEmployeeDTO(entity));
 			}
 			return employeeDTOs;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error(e.getMessage());
+			logger.error(environment.getProperty(e.getMessage()));
 			throw e;
 		}
 	}

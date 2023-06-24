@@ -2,6 +2,9 @@ package app.model;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
 import app.entity.EmployeeEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +27,7 @@ public class EmployeeDTO {
 	private String password;
 	private String designation;
 	private List<SkillDTO> skills;
+	private String url;
 
 	public Integer getId() {
 		return id;
@@ -133,7 +137,15 @@ public class EmployeeDTO {
 	public void setSkills(List<SkillDTO> skills) {
 		this.skills = skills;
 	}
+	
+	public String getUrl() {
+		return url;
+	}
 
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public EmployeeEntity createEmployeeEntity(EmployeeDTO employeeDTO) {
 		EmployeeEntity employeeEntity=null;
