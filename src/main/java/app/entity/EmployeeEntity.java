@@ -154,6 +154,7 @@ public class EmployeeEntity {
 				List<SkillDTO> skillDTOs=new ArrayList<>();
 				for (SkillEntity skillEntity : skillEntities) {
 					SkillDTO skillDTO=new SkillDTO();
+					skillDTO.setSkillId(skillEntity.getSkillId());
 					skillDTO.setEmpId(skillEntity.getEmpId());
 					skillDTO.setSkillName(skillEntity.getSkillName());
 					skillDTOs.add(skillDTO);

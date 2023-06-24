@@ -2,6 +2,7 @@ package app.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import app.exception.employee.EmployeeAlreadyExistsException;
 import app.exception.employee.EmployeeNotFoundException;
@@ -49,10 +51,8 @@ public class EmployeeController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<SuccessResponse> updateEmployee(@RequestBody EmployeeDTO employeeDTO) throws Exception{
-		EmployeeDTO response=employeeService.updateEmployee(employeeDTO);
-		SuccessResponse data=new SuccessResponse(HttpStatus.OK.value(), response);
-		return new ResponseEntity<>(data,HttpStatus.OK);
+	public EmployeeDTO updateEmployee(@RequestBody EmployeeDTO employeeDTO) throws Exception{
+		return employeeService.updateEmployee(employeeDTO);
 	}
 	
 	@PostMapping(value="/login",produces = "application/json")
@@ -65,5 +65,10 @@ public class EmployeeController {
 		String response=employeeService.deleteEmployee(email);
 		SuccessResponse data=new SuccessResponse(HttpStatus.OK.value(), response);
 		return new ResponseEntity<>(data,HttpStatus.OK);
+	}
+	
+	@GetMapping("/search/{searchValue}")
+	public Set<EmployeeDTO> searchEmployee(@PathVariable String searchValue) throws Exception{
+		return employeeService.searchEmployee(searchValue);
 	}
 }

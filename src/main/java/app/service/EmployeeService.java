@@ -3,7 +3,7 @@ package app.service;
 
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 
 import app.exception.employee.EmployeeAlreadyExistsException;
 import app.exception.employee.EmployeeNotFoundException;
@@ -16,5 +16,5 @@ public interface EmployeeService {
 	public Map<String, Integer> loginEmployee(String email, String password);
 	public String deleteEmployee(String email) throws Exception;;
 	public EmployeeDTO updateEmployee(EmployeeDTO employee) throws Exception;
-	public List<EmployeeDTO> searchEmployeeByName(String name);
+	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception;
 }

@@ -2,6 +2,7 @@ package app.DAO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ public interface EmployeeDAO {
 	public Boolean findEmployeeByEmail(String email);
 	public EmployeeDTO updateEmployee(EmployeeDTO employee) throws Exception;
 	public Boolean deleteEmployee(String email) throws Exception;
+	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception;
 }

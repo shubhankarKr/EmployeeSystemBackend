@@ -55,20 +55,32 @@ public class SkillDAOImpl implements SkillDAO{
 	}
 
 	@Override
-	public List<SkillDTO> updateSkillForEmployee(Integer empId, List<SkillDTO> skillDTO) {
+	public List<SkillDTO> addSkillForEmployee(Integer empId, List<SkillDTO> skillDTO) {
 		List<SkillDTO> res=new ArrayList<>();
+		deleteSkillForEmployee(empId);
 		for (SkillDTO skillDTO2 : skillDTO) {
-			SkillEntity entity=entityManager.find(SkillEntity.class, skillDTO2.getSkillId());
-			if(entity!=null) {
-				entity.setSkillName(skillDTO2.getSkillName());
-			}else {
-				entity=new SkillEntity();
-				entity.setEmpId(empId);
-				entity.setSkillName(skillDTO2.getSkillName());
-				entityManager.persist(entity);
-			}
+			SkillEntity entity=new SkillEntity();
+			entity.setEmpId(empId);
+			entity.setSkillName(skillDTO2.getSkillName());
+			entityManager.persist(entity);
 			res.add(entity.createSkillDTO(entity));
 		}
 		return res;
 	}
+
+	@Override
+	public Boolean deleteSkillForEmployee(Integer empId) {
+		try {
+			Query query= (Query) entityManager.createQuery("select s from SkillEntity s where s.empId = :empId");
+			query.setParameter("empId", empId);
+		    List<SkillEntity> skillEntities= query.getResultList();
+		    for (SkillEntity skillEntity : skillEntities) {
+				entityManager.remove(skillEntity);
+			}
+		    return true;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
 }

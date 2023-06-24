@@ -2,12 +2,17 @@ package app.DAOImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 
@@ -29,6 +34,11 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	
 	@Resource
 	SkillDAO skillDAO;
+	
+	@Autowired
+	Environment environment;
+	
+	Logger logger=LogManager.getLogger(this.getClass());
 
 	@Override
 	public String createEmployee(EmployeeDTO employeeDTO) {
@@ -94,7 +104,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				return true;
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.error(e.getMessage());
 		}
 		return false;		
 	}
@@ -115,10 +125,13 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				employeeEntity.setStreet(employeeDTO.getStreet());
 				employeeEntity.setGender(employeeDTO.getGender());
 				employeeEntity.setDesignation(employeeDTO.getDesignation());
-				skillDAO.updateSkillForEmployee(employeeEntity.getId(), employeeDTO.getSkills());
+				skillDAO.deleteSkillForEmployee(employeeEntity.getId());
+				List<SkillDTO> skillDTOs= skillDAO.addSkillForEmployee(employeeEntity.getId(), employeeDTO.getSkills());
 				dto=employeeEntity.createEmployeeDTO(employeeEntity);
+				dto.setSkills(skillDTOs);
 			}
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new Exception("EMPLOYEE_NOT_FOUND");
 		}
 		return dto;
@@ -134,8 +147,40 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 				entityManager.remove(employeeEntity);
 			}
 		} catch (Exception e) {
+			logger.error(e.getMessage());
 			throw new Exception("EMPLOYEE_NOT_FOUND");
 		}
 		return true;
 	}
+
+	@Override
+	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception {
+		// TODO Auto-generated method stub
+		Set<EmployeeEntity> entities=new HashSet<>();
+		Set<EmployeeDTO> employeeDTOs=new HashSet<>();
+		String s="select e from EmployeeEntity e where e.email like \":searchValue%\"";
+		try {
+			Query query=(Query) entityManager.createQuery("select e from EmployeeEntity e where e.email like '%"+searchValue+"%' "
+					+"OR e.firstName like '%"+searchValue+"%'"
+					+"OR e.city like '%"+searchValue+"%'"
+					+"OR e.designation like '%"+searchValue+"%'"
+					+"OR e.lastName like '%"+searchValue+"%'"
+					);
+			List<EmployeeEntity> list=(List<EmployeeEntity>) query.getResultList();
+			for (EmployeeEntity employeeEntity : list) {
+				entities.add(employeeEntity);
+			}
+			if(entities.size() == 0)
+				throw new Exception("NO_RECORD_FOUND_WIHT_THE_GIVEN_SERCH_VALUE");
+			for (EmployeeEntity entity : entities) {
+				employeeDTOs.add(entity.createEmployeeDTO(entity));
+			}
+			return employeeDTOs;
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error(e.getMessage());
+			throw e;
+		}
+	}
+	
 }

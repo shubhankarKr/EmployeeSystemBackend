@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,13 +21,19 @@ public class ExceptionControllerAdvice {
 	
 	@ExceptionHandler(value=EmployeeAlreadyExistsException.class)
 	public ResponseEntity<ErrorResponse> createEmployeeExceptionalHandler(EmployeeAlreadyExistsException exception){
-		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), LocalDateTime.now());
+		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), null, LocalDateTime.now());
+		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponse> genericEmployeeExceptionalHandler(Exception exception){
+		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),null, exception, LocalDateTime.now());
 		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorResponse> genericEmployeeExceptionalHandler(Exception exception){
-		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), LocalDateTime.now());
+	public ResponseEntity<ErrorResponse> EmployeeExceptionalHandler(Exception exception){
+		ErrorResponse errorResponse=new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), environment.getProperty(exception.getMessage()), null, LocalDateTime.now());
 		return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

@@ -2,6 +2,7 @@ package app.serviceImpl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,9 +64,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public List<EmployeeDTO> searchEmployeeByName(String name) {
+	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception{
 		// TODO Auto-generated method stub
-		return null;
+		return employeeDAO.searchEmployee(searchValue);
 	}
 
 }
