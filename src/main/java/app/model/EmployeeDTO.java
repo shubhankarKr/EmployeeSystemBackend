@@ -1,11 +1,13 @@
 package app.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
 import app.entity.EmployeeEntity;
+import app.model.entity.CityDropdown;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -16,7 +18,6 @@ public class EmployeeDTO {
 	private String firstName;
 	private String lastName;
 	private String street;
-	private String city;
 	private Integer pinCode;
 	@NotNull(message = "Please select gender")
 	@Pattern(regexp =  "[MF]",message = "Gender should be either M or F")
@@ -28,6 +29,19 @@ public class EmployeeDTO {
 	private String designation;
 	private List<SkillDTO> skills;
 	private String url;
+	private LocalDateTime creationDateTime;
+	
+	private CityDropdownDTO city;
+	
+	public LocalDateTime getCreationDateTime() {
+		return creationDateTime;
+	}
+
+
+	public void setCreationDateTime(LocalDateTime creationDateTime) {
+		this.creationDateTime = creationDateTime;
+	}
+
 
 	public Integer getId() {
 		return id;
@@ -69,12 +83,12 @@ public class EmployeeDTO {
 	}
 
 
-	public String getCity() {
+	public CityDropdownDTO getCity() {
 		return city;
 	}
 
 
-	public void setCity(String city) {
+	public void setCity(CityDropdownDTO city) {
 		this.city = city;
 	}
 
@@ -151,7 +165,7 @@ public class EmployeeDTO {
 		EmployeeEntity employeeEntity=null;
 		if(employeeDTO != null) {
 			employeeEntity=new EmployeeEntity();
-			employeeEntity.setCity(employeeDTO.getCity());
+//			employeeEntity.setCity(employeeDTO.getCity());
 			employeeEntity.setFirstName(employeeDTO.getFirstName());
 			employeeEntity.setLastName(employeeDTO.getLastName());
 			employeeEntity.setPinCode(employeeDTO.getPinCode());

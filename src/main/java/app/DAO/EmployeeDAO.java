@@ -18,4 +18,5 @@ public interface EmployeeDAO {
 	public EmployeeDTO updateEmployee(EmployeeDTO employee) throws Exception;
 	public Boolean deleteEmployee(String email) throws Exception;
 	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception;
+	public Boolean generateData(Short count);
 }

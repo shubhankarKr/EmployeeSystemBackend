@@ -1,11 +1,14 @@
 package app.entity;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.model.CityDropdownDTO;
 import app.model.EmployeeDTO;
 import app.model.SkillDTO;
+import app.model.entity.CityDropdown;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,8 +16,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "employee")
@@ -30,7 +37,6 @@ public class EmployeeEntity {
 	@Column(name = "last_name")
 	String lastName;
 	String street;
-	String city;
 
 	@Column(name = "pin_code")
 	Integer pinCode;
@@ -43,11 +49,26 @@ public class EmployeeEntity {
 	
 	private String designation;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+    LocalDateTime creationDateTime;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "emp_id")
 	private List<SkillEntity> skill; 
 	
 	private String url;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="city_id")
+	private CityDropdown city;
+	
+	public CityDropdown getCity() {
+		return city;
+	}
+
+	public void setCity(CityDropdown city) {
+		this.city = city;
+	}
 
 	public String getPassword() {
 		return password;
@@ -105,14 +126,6 @@ public class EmployeeEntity {
 		this.street = street;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	public Integer getPinCode() {
 		return pinCode;
 	}
@@ -145,11 +158,26 @@ public class EmployeeEntity {
 		this.url = url;
 	}
 
+	public LocalDateTime getCreationDateTime() {
+		return creationDateTime;
+	}
+
+	public void setCreationDateTime(LocalDateTime creationDateTime) {
+		this.creationDateTime = creationDateTime;
+	}
+
 	public EmployeeDTO createEmployeeDTO(EmployeeEntity employeeEntity) {
 		EmployeeDTO employeeDTO = null;
 		if (employeeEntity != null) {
 			employeeDTO = new EmployeeDTO();
-			employeeDTO.setCity(employeeEntity.getCity());
+//			employeeDTO.setCity(employeeEntity.getCity());
+			CityDropdown city=employeeEntity.getCity();
+			if(city!=null) {
+				CityDropdownDTO cityDto=new CityDropdownDTO();
+				cityDto.setCityId(city.getCityId());
+				cityDto.setCityName(city.getCityName());
+				employeeDTO.setCity(cityDto);
+			}
 			employeeDTO.setFirstName(employeeEntity.getFirstName());
 			employeeDTO.setId(employeeEntity.getId());
 			employeeDTO.setLastName(employeeEntity.getLastName());
@@ -160,6 +188,7 @@ public class EmployeeEntity {
 			employeeDTO.setPassword(employeeEntity.getPassword());
 			employeeDTO.setDesignation(employeeEntity.getDesignation());
 			employeeDTO.setUrl(employeeEntity.getUrl());
+			employeeDTO.setCreationDateTime(employeeEntity.getCreationDateTime());
 			List<SkillEntity> skillEntities =employeeEntity.getSkill();
 			if (skillEntities != null) {
 				List<SkillDTO> skillDTOs=new ArrayList<>();

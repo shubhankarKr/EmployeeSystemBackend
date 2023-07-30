@@ -17,4 +17,5 @@ public interface EmployeeService {
 	public String deleteEmployee(String email) throws Exception;;
 	public EmployeeDTO updateEmployee(EmployeeDTO employee) throws Exception;
 	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception;
+	public Boolean generateData(Short count);
 }

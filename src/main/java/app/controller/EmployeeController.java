@@ -71,4 +71,11 @@ public class EmployeeController {
 	public Set<EmployeeDTO> searchEmployee(@PathVariable String searchValue) throws Exception{
 		return employeeService.searchEmployee(searchValue);
 	}
+	
+	@PostMapping("/generate")
+	public Boolean generateData(@RequestParam("count") Short count) {
+		
+		employeeService.generateData(count);
+		return true;
+	}
 }

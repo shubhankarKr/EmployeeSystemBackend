@@ -1,11 +1,12 @@
 package app.DAOImpl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,12 +18,16 @@ import org.springframework.stereotype.Repository;
 
 
 import app.DAO.EmployeeDAO;
+import app.DAO.GenericDAO;
 import app.DAO.SkillDAO;
 import app.entity.EmployeeEntity;
 import app.entity.SkillEntity;
 import app.exception.employee.EmployeeNotFoundException;
+import app.model.CityDropdownDTO;
 import app.model.EmployeeDTO;
+import app.model.GeneralConstant;
 import app.model.SkillDTO;
+import app.model.entity.CityDropdown;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 
@@ -37,6 +42,9 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	
 	@Autowired
 	Environment environment;
+	
+	@Autowired
+	GenericDAO genericDAO;
 	
 	Logger logger=LogManager.getLogger(this.getClass());
 
@@ -77,6 +85,8 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		List<EmployeeDTO> employees=new ArrayList<>();
 		for (EmployeeEntity employeeEntity : entities) {
 			employees.add(employeeEntity.createEmployeeDTO(employeeEntity));
+//			String url="http://"+environment.getProperty("HOST_NAME")+"/employee/getEmployeeById/"+employeeEntity.getId();
+//			employeeEntity.setUrl(url);
 		}
 		return employees;
 	}
@@ -124,7 +134,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			query.setParameter("email", email);
 			EmployeeEntity employeeEntity=(EmployeeEntity) query.getSingleResult();
 			if(employeeEntity != null) {
-				employeeEntity.setCity(employeeDTO.getCity());
+//				employeeEntity.setCity(employeeDTO.getCity());
 				employeeEntity.setFirstName(employeeDTO.getFirstName());
 				employeeEntity.setLastName(employeeDTO.getLastName());
 				employeeEntity.setPinCode(employeeDTO.getPinCode());
@@ -162,7 +172,6 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception {
-		// TODO Auto-generated method stub
 		Set<EmployeeEntity> entities=new HashSet<>();
 		Set<EmployeeDTO> employeeDTOs=new HashSet<>();
 		String s="select e from EmployeeEntity e where e.email like \":searchValue%\"";
@@ -184,10 +193,98 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 			}
 			return employeeDTOs;
 		} catch (Exception e) {
-			// TODO: handle exception
 			logger.error(environment.getProperty(e.getMessage()));
 			throw e;
 		}
 	}
+
+	@Override
+	public Boolean generateData(Short count) {
+		genericDAO.addCities();
+		List<CityDropdownDTO> cityDropdownDTOs= genericDAO.getAllCities();
+		try {
+			EmployeeEntity e= null;
+			for (int i = 0; i < count; i++) {
+				e=new EmployeeEntity();
+				// set city
+				
+				CityDropdownDTO cityDTO= cityDropdownDTOs.get(new Random().nextInt(cityDropdownDTOs.size()));
+				
+				
+//				e.setCity();
+				e.setDesignation(randomStringFromArray(GeneralConstant.DESIGNATION_ARRAY));
+				e.setEmail(randomString(20)+randomStringFromArray(GeneralConstant.MAIL_EXTENSTION));
+				e.setGender(generateGender()+"");
+				e.setPinCode(randomNumber(100000, 999999));
+				e.setStreet(randomString(13));
+				e.setCreationDateTime(LocalDateTime.now());
+				setName(e);
+				
+				entityManager.persist(e);
+//				CityDropdownDTO cityDTO= cityDropdownDTOs.get(new Random().nextInt(cityDropdownDTOs.size()));
+				CityDropdown cityEntity=entityManager.find(CityDropdown.class, cityDTO.getCityId());
+				e.setCity(cityEntity);
+				String url="http://"+environment.getProperty("HOST_NAME")+"/employee/getEmployeeById/"+e.getId();
+				e.setUrl(url);
+				int skillCount=randomNumber(1, 5);
+				int startingPoint=randomNumber(0, GeneralConstant.SKILL_ARRAY.length-1); 
+					
+				SkillEntity skillEntity=null;
+				for (int j = startingPoint; j < (startingPoint + skillCount) ; j++) {
+					if(j<GeneralConstant.SKILL_ARRAY.length) {
+						skillEntity=new SkillEntity();
+							skillEntity.setEmpId(e.getId());
+							skillEntity.setSkillName(GeneralConstant.SKILL_ARRAY[j]);
+							entityManager.persist(skillEntity);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
+
+	private void setName(EmployeeEntity e) {
+		String[] name =GeneralConstant.NAME_ARRAY[new Random().nextInt(GeneralConstant.NAME_ARRAY.length)];
+		if(name.length ==1) {
+			e.setFirstName(name[0]);
+		}
+		else if(name.length>1) {
+			e.setFirstName(name[0]);
+			e.setLastName(name[1]);
+		}
+	}
+
+	String randomString(int stringCount) {
+		int leftLimit = 97; 
+	    int rightLimit = 122;
+	    Random random = new Random();
+
+	    String generatedString = random.ints(leftLimit, rightLimit + 1)
+	      .limit(stringCount)
+	      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+	      .toString();
+	    
+	    return generatedString;
+	}
+	
+	int randomNumber(int min,int max) {
+		return (int)Math.floor(Math.random() * (max - min + 1) + min);
+	}
+	
+	String randomStringFromArray(String[] array) {
+		return array[new Random().nextInt(array.length)];
+	}
+	
+	char generateGender() {
+		char[] charArray= {
+				'M','F'
+		};
+		int randomIndex = (int) (Math.random() * charArray.length);  
+		return charArray[randomIndex];
+	}
 }

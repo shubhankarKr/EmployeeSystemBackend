@@ -6,8 +6,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import app.DAO.EmployeeDAO;
@@ -71,6 +69,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Set<EmployeeDTO> searchEmployee(String searchValue) throws Exception{
 		// TODO Auto-generated method stub
 		return employeeDAO.searchEmployee(searchValue);
+	}
+
+	@Override
+	public Boolean generateData(Short count) {
+		// TODO Auto-generated method stub
+		employeeDAO.generateData(count);
+		return null;
 	}
 
 }
